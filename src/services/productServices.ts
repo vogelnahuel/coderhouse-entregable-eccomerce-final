@@ -19,7 +19,7 @@ import { ProductsDao } from "../dao/productDao";
     }
     public static async productUpdateService(data: any): Promise<any> {
       const timestamp = Date.now();
-      await ProductsDao.update(data.idParam, {
+      await ProductsDao.update(data._id, {
         name: data.name,
         description: data.description,
         code: data.code,

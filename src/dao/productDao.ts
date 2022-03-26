@@ -23,10 +23,14 @@ export class ProductsDao {
   }
 
   static async getById(productId) {
-    const getProduct = await productModel.findById(productId);
-
-    if (!getProduct) throw new NotFound(" el producto solicitado no existe");
-    return getProduct;
+    const isValid = mongoose.Types.ObjectId.isValid(productId);
+    if (isValid) {
+      const getProduct = await productModel.findById(productId);
+      if (!getProduct) throw new NotFound(" el producto solicitado no existe");
+      return getProduct;
+    } else {
+      throw new NotFound("El id pasado es invalido");
+    }
   }
 
   static async add(data) {
@@ -40,33 +44,36 @@ export class ProductsDao {
       stock: data.stock,
       timestamp: `${moment().format("DD MM YYYY hh:mm")}`,
     };
-    try {
-      
-      const addProduct = await productModel.create(newProduct);
-      if (!addProduct) throw new NotFound("Error al crear el producto");
 
-      return addProduct;
-    } catch (error) {
+    const addProduct = await productModel.create(newProduct);
+    if (!addProduct) throw new NotFound("Error al crear el producto");
 
-      throw new NotFound("Error al crear el producto");
-    }
-   
-  
+    return addProduct;
   }
 
   static async delete(productId) {
-    const result = await productModel.findOneAndDelete({ _id: productId });
-    if (!result) throw new NotFound(" el producto solicitado no existe");
+    const isValid = mongoose.Types.ObjectId.isValid(productId);
+    if (isValid) {
+      const result = await productModel.findOneAndDelete({ _id: productId });
+      if (!result) throw new NotFound(" el producto solicitado no existe");
+    } else {
+      throw new NotFound("El id pasado es invalido");
+    }
   }
 
   static async update(productId: string, newData) {
-    newData._id = productId;
-    const update = await productModel.findOneAndUpdate(
-      { _id: productId },
-      newData,
-      { new: true }
-    );
-    if (!update) throw new NotFound(" el producto solicitado no existe");
-    return update;
+    const isValid = mongoose.Types.ObjectId.isValid(productId);
+    if (isValid) {
+      newData._id = productId;
+      const update = await productModel.findOneAndUpdate(
+        { _id: productId },
+        newData,
+        { new: true }
+      );
+      if (!update) throw new NotFound(" el producto solicitado no existe");
+      return update;
+    } else {
+      throw new NotFound("El id pasado es invalido");
+    }
   }
 }

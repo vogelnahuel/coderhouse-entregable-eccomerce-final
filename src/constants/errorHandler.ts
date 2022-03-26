@@ -8,6 +8,7 @@ enum ERROR {
   NotFound = "NotFound",
   InvalidParams = "InvalidParams",
   BusinessError = "BusinessError",
+  CastError = "CastError",
 }
 
 /**
@@ -21,6 +22,7 @@ export const HTTP_ERROR_HANDLER = ({ error, res }):void => {
     [ERROR.NotFound]: () => Http.BadRequest(error.message, res),
     [ERROR.InvalidParams]: () => Http.BadRequest(error.message, res),
     [ERROR.BusinessError]: () => Http.BadRequest(error.message, res),
+    [ERROR.CastError]: () => Http.BadRequest(error.message, res),
   };
 
   ERROR_SELECTOR[error.constructor.name]();

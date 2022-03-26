@@ -1,16 +1,36 @@
-
 import { Router } from "express";
+import { ProductUpdateRequest } from "../../models/request/ProductUpdate";
+import { validatorMiddeware } from "../..//middlewares/validatorMiddeware";
 import { ProductController } from "../../controllers/productControllers";
-
+import { ProductCreateRequest } from "../../models/request/ProductCreate";
 
 const routerProduct = Router();
 
-
 routerProduct.get("/:id?", ProductController.productGet);
 
-routerProduct.put("/:id", ProductController.productUpdate);
+routerProduct.put(
+  "/:id",
+  (req, res, next) =>
+    validatorMiddeware<ProductUpdateRequest>(
+      req,
+      res,
+      next,
+      new ProductUpdateRequest()
+    ),
+  ProductController.productUpdate
+);
 
-routerProduct.post("/", ProductController.productCreate);
+routerProduct.post(
+  "/",
+  (req, res, next) =>
+    validatorMiddeware<ProductCreateRequest>(
+      req,
+      res,
+      next,
+      new ProductCreateRequest()
+    ),
+  ProductController.productCreate
+);
 
 routerProduct.delete("/:id", ProductController.productDelete);
 

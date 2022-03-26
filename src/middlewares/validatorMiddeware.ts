@@ -1,9 +1,13 @@
 import { validate } from "class-validator";
 import { Request, Response, NextFunction } from "express";
+import { ProductUpdateRequest } from "../models/request/ProductUpdate";
+import { ProductCreateRequest } from "../models/request/ProductCreate";
 import { UsersBuyRequest } from "../models/request/UsersBuy";
 import { UsersCreateRequest } from "../models/request/UsersCreate";
 import { UsersLoginRequest } from "../models/request/UsersLogin";
 import { Http } from "../utils/http";
+import { CartCreateRequest } from "../models/request/CartCreate";
+import { CartAddProductRequest } from "../models/request/CartAddProduct";
 
 /**
  * @brief verifica los datos del usuario contenga algun error
@@ -13,7 +17,14 @@ import { Http } from "../utils/http";
  */
 
 export const validatorMiddeware = async <
-  T extends UsersCreateRequest | UsersLoginRequest | UsersBuyRequest
+  T extends
+    | UsersCreateRequest
+    | UsersLoginRequest
+    | UsersBuyRequest
+    | ProductCreateRequest
+    | ProductUpdateRequest
+    | CartCreateRequest
+    | CartAddProductRequest
 >(
   req: Request,
   res: Response,

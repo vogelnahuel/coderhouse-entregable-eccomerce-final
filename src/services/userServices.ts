@@ -32,7 +32,7 @@ import { buyUser, createUser, LoginPostSucess, loginUser, success, User } from "
 export class UserService {
 
 
-  public static async usersPostCreateService(data:createUser): Promise<success> {
+  public static async usersPostCreateService(data:createUser): Promise<any> {
  
     const MAIL_OPTIONS = {
       from: "Servidor de node.js",
@@ -42,9 +42,9 @@ export class UserService {
     };
     try {
       await smtpTransport.sendMail(MAIL_OPTIONS);
-      return { text: "se creo con exito" };
+
     } catch (error) {
-      console.log(error)
+
       throw new NotFound('The MAIL_OPTIONS is invalid');
     }
   }

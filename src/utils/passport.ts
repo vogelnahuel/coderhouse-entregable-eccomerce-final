@@ -7,6 +7,7 @@ import userModel from "../models/schemas/userSchema";
 const loggerFile = log4js.getLogger('archivo')
 import { Request } from "express";
 import { User } from '../interfaces/usersInterfaces';
+import { CartDao } from "../dao/cartDao";
 
 passport.use(
   "login",
@@ -60,6 +61,10 @@ passport.use(
       };
 
      const resCreate:User = await userModel.create(newUser);
+
+
+      await CartDao.addCarrito(resCreate._id);
+
      return done(null,resCreate);
     }
   )
