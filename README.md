@@ -1,3 +1,6 @@
+falta  interfaces , test con mocha y chai , swagger , comentarios al codigo
+
+
 # Entregable Final Coder House (Node Helpers)
 
 Una breve introduccion de lo que se hizo
