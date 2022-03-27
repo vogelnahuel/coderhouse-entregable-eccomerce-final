@@ -45,6 +45,9 @@ export default class Server {
     //Rutas de mi app
     this.routes();
   }
+  getApp(){
+    return this.app;
+  }
   /**
    * @brief inicializa los  middlewares
    *

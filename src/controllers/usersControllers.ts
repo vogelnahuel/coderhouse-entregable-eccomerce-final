@@ -36,15 +36,17 @@ export class UsersController {
    * @param req  recibe loginUser
    * @returns  un obj  LoginPostSucess o un error
    */
-  public static async usersPostLogin (req: Request, res: Response)  {
+  public static async usersPostLogin (req: Request, res: Response) :Promise<any> {
     if (!req.isAuthenticated()) {
       Http.BadRequest("Error en los datos de entrada",res)
     }
     try {
  
       const response: LoginPostSucess = await UserService.usersPostLoginService(req.body);
+
       Http.Ok(response, res);
     } catch (error) {
+      console.log(error)
       loggerFile.warn(error);
       HTTP_ERROR_HANDLER({error,res})
     }

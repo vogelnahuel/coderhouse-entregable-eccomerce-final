@@ -5,11 +5,11 @@ import { Http } from "./http";
 /**
  *
  *  @brief genera un token aplicando las reglas que se requieran
- *  @param document documento
+ *  @param email email
  *  @returns  un JWT encriptado
  */
-export const generateToken = (document: string): string => {
-  const token: string = jwt.sign({ data: document }, process.env.PRIVATE_KEY, {
+export const generateToken = (email: string): string => {
+  const token: string = jwt.sign({ data: email }, process.env.PRIVATE_KEY, {
     expiresIn: process.env.EXPIRATION_TOKEN,
   });
 
