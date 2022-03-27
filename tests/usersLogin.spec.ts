@@ -21,7 +21,7 @@ chai.should();
 
 //abriendo un cliente para ejecutar el test de integracion
 
-describe("Tests", () => {
+describe("Users Login", () => {
   let stub, stubCart;
   let stubValueUser
   let successController

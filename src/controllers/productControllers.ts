@@ -46,6 +46,7 @@ export class ProductController {
       );
       Http.Ok(response, res);
     } catch (error) {
+      console.log(error)
       loggerFile.warn(error);
       HTTP_ERROR_HANDLER({ error, res });
     }
