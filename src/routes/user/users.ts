@@ -10,6 +10,29 @@ import passport from "passport";
  */
 const routerUsers = Router();
 
+
+/**
+ * @swagger
+ * /api/users/create:
+ *   post:
+ *     summary: create User
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserLogin'
+ *     responses:
+ *       200:
+ *         description:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       500:
+ *         description: Some server error
+ */
 routerUsers.post(
   "/create",
   (req, res, next) =>
@@ -18,6 +41,8 @@ routerUsers.post(
     
   UsersController.usersPostCreate
 );
+
+
 routerUsers.post(
   "/login",
   (req, res, next) =>
@@ -25,6 +50,9 @@ routerUsers.post(
     ,passport.authenticate("login"),
   UsersController.usersPostLogin
 );
+
+
+
 routerUsers.post(
   "/buy",
   (req, res, next) =>
