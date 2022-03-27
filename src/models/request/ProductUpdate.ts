@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { IsString, IsNumber } from "class-validator";
 
 /**
- *  UsersCreateRequest
- *  @brief valida los datos del usuario en base a condiciones
- *  
+ *  ProductUpdateRequest
+ *  @brief valida los datos del producto en base a condiciones
+ *  @param body name price stock photo code description
  */
 export class ProductUpdateRequest {
 
@@ -28,7 +28,7 @@ export class ProductUpdateRequest {
 
   /**
    *
-   * @param body 
+   * @param body name price stock photo code description
    */ 
 
   constructor(body?: ProductUpdateRequest) {
@@ -43,6 +43,10 @@ export class ProductUpdateRequest {
 
   }
   
+  /**
+   *
+   * @param body name price stock photo code description
+   */ 
   public setbody(body: ProductUpdateRequest){
     
     this.name = body?.name || '';

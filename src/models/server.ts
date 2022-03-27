@@ -9,6 +9,9 @@ import { swaggerOptions } from "../constants/swaggerConfig";
 import { verifyToken } from "../utils/token";
 import cors from "cors";
 import passport from 'passport';
+
+import log4js from 'log4js';
+const logger = log4js.getLogger()
 require('../utils/passport')
 /**
  * Server
@@ -76,7 +79,7 @@ export default class Server {
    */
   listen() {
     this.app.listen(this.port, () => {
-      console.log("servidor corriendo en puerto:" + this.port);
+      logger.info("servidor corriendo en puerto:" + this.port);
     });
   }
 }

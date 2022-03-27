@@ -1,23 +1,17 @@
-
-import Server from './models/server'
-
+import Server from "./models/server";
 import * as DotEnv from "dotenv";
-
-import mongoose from 'mongoose';
-import mongoDB from './constants/mongoUrl';
-
-import './constants/log4jsConfig'
-
+import mongoose from "mongoose";
+import mongoDB from "./constants/mongoUrl";
+import "./constants/log4jsConfig";
 
 try {
-    DotEnv.config();
+  DotEnv.config();
 
-    // Pool de conexiones a la DB
-    mongoose.connect(mongoDB);
-    const server: Server = new Server();
+  // Pool de conexiones a la DB
+  mongoose.connect(mongoDB);
+  const server: Server = new Server();
 
-    server.listen();
-
+  server.listen();
 } catch (error) {
-    console.error( error )
+  console.error(error);
 }

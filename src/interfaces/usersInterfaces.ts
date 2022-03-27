@@ -1,3 +1,6 @@
+import { CartUser } from "./cartInterfaces";
+import { Products } from "./productInterfaces";
+
 
 export interface User {
     _id:string
@@ -27,7 +30,7 @@ export interface buyUser {
   email: string;
   phone: string;
   name: string;
-  productList: [];
+  productList: Products[];
 }
 
 export interface success {
@@ -35,6 +38,15 @@ export interface success {
 }
 export interface LoginPostSucess {
   token: string;
-  carritoUser: any;
-  resUser: any;
+  cartUser: CartUser;
+  User: User;
 }
+
+
+export interface MailOptions {
+  from: string;
+  to: string;
+  subject: string;
+  html: string;
+}
+

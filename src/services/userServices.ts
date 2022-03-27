@@ -6,12 +6,9 @@ import { NotFound } from "../utils/errorsClass";
 import { UserDao } from "../dao/usersDao";
 import { CartDao } from "../dao/cartDao";
 import { createTransport } from "nodemailer";
-import { buyUser, createUser, LoginPostSucess, loginUser, success, User } from "../interfaces/usersInterfaces";
-/**
- *  LoginService
- *  @brief esta clase hace toda la logica de negocio de los endpoint de users
- *
- */
+import { buyUser, createUser, LoginPostSucess, loginUser, success, User, MailOptions } from "../interfaces/usersInterfaces";
+import { CartUser } from "../interfaces/cartInterfaces";
+
 
  const  smtpTransport = createTransport({
      host: "smtp.gmail.com",
@@ -24,17 +21,26 @@ import { buyUser, createUser, LoginPostSucess, loginUser, success, User } from "
    });
 
 
- const accountSID="AC300861e461e8a47a5b312131c2bc76c1";
- const authToken="8df8f10d263cd3bcea9c4c42c06bb065";
+ const accountSID:string="AC300861e461e8a47a5b312131c2bc76c1";
+ const authToken:string="538daa933922f55da1d676853c842ac5"; // este token solo dura 3 dias
  const client = require('twilio')(accountSID,authToken);
 
 
+/**
+ *  UserService
+ *  @brief esta clase hace toda la logica de negocio de los endpoint de los usuarios
+ *
+ */
 export class UserService {
 
-
-  public static async usersPostCreateService(data:createUser): Promise<any> {
+  /**
+   *  @brief envia un email  una vez creado el usuario
+   *  @param data createUser
+   *  @returns  success o error
+   */
+  public static async usersPostCreateService(data:createUser): Promise<success> {
  
-    const MAIL_OPTIONS = {
+    const MAIL_OPTIONS:MailOptions = {
       from: "Servidor de node.js",
       to: data.email,
       subject: "Nuevo usuario",
@@ -42,30 +48,42 @@ export class UserService {
     };
     try {
       await smtpTransport.sendMail(MAIL_OPTIONS);
-
+      return { text: "se creo con exito" };
     } catch (error) {
 
       throw new NotFound('The MAIL_OPTIONS is invalid');
     }
   }
+
+  /**
+   *  @brief verifica si el usuario existe y devuelve el token para logearse
+   *  @param data loginUser
+   *  @returns  LoginPostSucess o error
+   */
   public static async usersPostLoginService(data:loginUser): Promise<LoginPostSucess> {
 
-    let resUser:User =  await UserDao.getCarrito(data.email);
-    let carritoUser = await CartDao.getByIdUser(resUser._id);
+    let User:User =  await UserDao.getCarrito(data.email);
+    let cartUser:CartUser = await CartDao.getByIdUser(User._id);
 
     const token = generateToken(data.email)
-    const carritoUserRes = {
+    const carritoUserRes:LoginPostSucess = {
       token,
-      carritoUser,
-      resUser
+      cartUser,
+      User
     }
     return carritoUserRes
 
   }
+
+    /**
+   *  @brief envia un email y un whatsapp una vez hecha la compra del usuario
+   *  @param data buyUser
+   *  @returns  success o error
+   */
   public static async usersPostBuyService(data:buyUser): Promise<success> {
     const {productList,email,name,phone} = data;
 
-    const MAIL_OPTIONS = {
+    const MAIL_OPTIONS:MailOptions = {
       from: "Servidor de node.js",
       to: email,
       subject: `nuevo pedido de ${name} ${email}`,
@@ -74,8 +92,8 @@ export class UserService {
 
     try {
       await smtpTransport.sendMail(MAIL_OPTIONS);
+      
     } catch (error) {
-      console.log(error)
       throw new NotFound('The MAIL_OPTIONS is invalid');
     }
 
@@ -88,7 +106,6 @@ export class UserService {
          to: `whatsapp:${phone}`
        })
     } catch (error) {
-      console.log(error)
       throw new NotFound('The messages is invalid');
     }
     return { text: "se creo con exito" };

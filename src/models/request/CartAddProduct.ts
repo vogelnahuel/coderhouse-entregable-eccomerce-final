@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
 /**
- *  UsersCreateRequest
- *  @brief valida los datos del usuario en base a condiciones
- *
+ *  CartAddProductRequest
+ *  @brief valida los datos del carrito en base a condiciones
+ *  @param  body idCart 
  */
 export class CartAddProductRequest {
   @IsNotEmpty()
@@ -12,7 +12,7 @@ export class CartAddProductRequest {
 
   /**
    *
-   * @param body
+   * @param  body idCart 
    */
 
   constructor(body?: CartAddProductRequest) {

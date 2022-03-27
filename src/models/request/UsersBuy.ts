@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString,IsEmail, IsArray } from "class-validator";
 /**
  *  UsersBuyRequest
  *  @brief valida los datos del usuario en base a condiciones
- *  
+ *  @param body email y phone name productList 
  */
 export class UsersBuyRequest {
 
@@ -27,7 +27,7 @@ export class UsersBuyRequest {
 
   /**
    *
-   * @param body email y constraseña nombre edad telefono direccion avatar
+   * @param body email y phone name productList 
    */ 
   constructor(body?: UsersBuyRequest) {
     this.email = body?.email || '';
@@ -35,6 +35,10 @@ export class UsersBuyRequest {
     this.phone = body?.phone || '';
     this.productList = body?.productList || [];
   }
+   /**
+   *
+   * @param body email y phone name productList 
+   */ 
   public setbody(body: UsersBuyRequest){
     this.email = body.email;
     this.name = body.name;

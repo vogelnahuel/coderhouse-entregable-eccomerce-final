@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString,IsEmail } from "class-validator";
 /**
  *  UsersLoginRequest
  *  @brief valida los datos del usuario en base a condiciones
- *  
+ *  @param body email y constraseña
  */
 export class UsersLoginRequest {
   @IsNotEmpty()

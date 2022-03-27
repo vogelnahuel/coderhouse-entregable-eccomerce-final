@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, IsNumber } from "class-validator";
 
 /**
- *  UsersCreateRequest
- *  @brief valida los datos del usuario en base a condiciones
- *  
+ *  ProductCreateRequest
+ *  @brief valida los datos del producto en base a condiciones
+ *  @param body name price stock photo code description
  */
 export class ProductCreateRequest {
 

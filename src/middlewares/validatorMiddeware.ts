@@ -10,8 +10,8 @@ import { CartCreateRequest } from "../models/request/CartCreate";
 import { CartAddProductRequest } from "../models/request/CartAddProduct";
 
 /**
- * @brief verifica los datos del usuario contenga algun error
- * @params req.body recibe los datos a validar documento y password
+ * @brief verifica los datos pasados contenga algun error
+ * @param req.body recibe los datos a validar 
  * @returns retorna error o sigue de largo en caso de no tenerlo
  *
  */

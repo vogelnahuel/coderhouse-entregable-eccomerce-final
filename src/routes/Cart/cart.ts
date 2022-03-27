@@ -4,6 +4,9 @@ import { CartController } from "../../controllers/cartControllers";
 import { CartCreateRequest } from '../../models/request/CartCreate';
 import { CartAddProductRequest } from '../../models/request/CartAddProduct';
 
+/**
+ *  @brief inicializa las rutas con su path por defecto y validatorMiddeware middleware que valida los datos
+ */
 const routerCart = Router();
 
 routerCart.post(

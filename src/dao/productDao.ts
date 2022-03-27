@@ -2,18 +2,33 @@ import mongoose from "mongoose";
 import moment from "moment";
 import productModel from "../models/schemas/productSchema";
 import { NotFound } from "../utils/errorsClass";
-
+import {
+  ProductRequest,
+  Products,
+  ProductUpdateRequest,
+} from "../interfaces/productInterfaces";
+/**
+ *  ProductsDao
+ *  @brief hace peticiones a la base de Products
+ */
 export class ProductsDao {
-  static async get(idParam: string) {
+    /**
+   *  @brief busca por id de producto a un producto
+   *  @param idParam Id de producto
+   *  @returns  Products | Products[] o error
+   */
+  static async get(idParam?: string):Promise<Products | Products[]> {
     if (idParam) {
-      const productList = await this.getById(idParam);
+      const productList: Products = await this.getById(idParam);
       if (!productList)
         throw new NotFound(
           " no existe producto con ese id cargados en tu base de datos"
         );
       return productList;
     } else {
-      const productsList = await productModel.find({}).sort({ nombre: 1 });
+      const productsList: Products[] = await productModel
+        .find({})
+        .sort({ nombre: 1 });
       if (productsList.length == 0)
         throw new NotFound(
           "Todavia no hay productos cargados en tu base de datos"
@@ -21,8 +36,12 @@ export class ProductsDao {
       return productsList;
     }
   }
-
-  static async getById(productId) {
+ /**
+   *  @brief busca por id de producto a un producto
+   *  @param productId Id de producto
+   *  @returns  Products o error
+   */
+  static async getById(productId: string) {
     const isValid = mongoose.Types.ObjectId.isValid(productId);
     if (isValid) {
       const getProduct = await productModel.findById(productId);
@@ -32,8 +51,12 @@ export class ProductsDao {
       throw new NotFound("El id pasado es invalido");
     }
   }
-
-  static async add(data) {
+/**
+   *  @brief crea un producto
+   *  @param data ProductRequest
+   *  @returns  Products o error
+   */
+  static async add(data: ProductRequest) {
     const newProduct = {
       _id: new mongoose.Types.ObjectId().toHexString(),
       name: data.name,
@@ -51,7 +74,11 @@ export class ProductsDao {
     return addProduct;
   }
 
-  static async delete(productId) {
+  /**
+   *  @brief elimina un producto haciendo la peticion a la base
+   *  @param productId string
+   */
+  static async delete(productId:string) {
     const isValid = mongoose.Types.ObjectId.isValid(productId);
     if (isValid) {
       const result = await productModel.findOneAndDelete({ _id: productId });
@@ -60,13 +87,15 @@ export class ProductsDao {
       throw new NotFound("El id pasado es invalido");
     }
   }
-
-  static async update(productId: string, newData) {
-    const isValid = mongoose.Types.ObjectId.isValid(productId);
+  /**
+   *  @brief actualiza un producto haciendo la peticion a la base
+   *  @param newData ProductUpdateRequest
+   */
+  static async update(newData: ProductUpdateRequest) {
+    const isValid = mongoose.Types.ObjectId.isValid(newData._id);
     if (isValid) {
-      newData._id = productId;
       const update = await productModel.findOneAndUpdate(
-        { _id: productId },
+        { _id: newData._id },
         newData,
         { new: true }
       );

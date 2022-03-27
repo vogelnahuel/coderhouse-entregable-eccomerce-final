@@ -5,7 +5,9 @@ import { UsersCreateRequest } from "../../models/request/UsersCreate";
 import { UsersLoginRequest } from '../../models/request/UsersLogin';
 import { UsersBuyRequest } from '../../models/request/UsersBuy';
 import passport from "passport";
-
+/**
+ *  @brief inicializa las rutas con su path por defecto y validatorMiddeware middleware que valida los datos
+ */
 const routerUsers = Router();
 
 routerUsers.post(
