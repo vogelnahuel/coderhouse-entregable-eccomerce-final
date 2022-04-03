@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { validatorMiddeware } from "../../middlewares/validatorMiddeware";
 import { CartController } from "../../controllers/cartControllers";
-import { CartCreateRequest } from '../../models/request/CartCreate';
-import { CartAddProductRequest } from '../../models/request/CartAddProduct';
+import { CartCreateRequest } from '../../models/requestDTO/CartCreateDTO';
+import { CartAddProductRequest } from '../../models/requestDTO/CartAddProductDTO';
 
 /**
  *  @brief inicializa las rutas con su path por defecto y validatorMiddeware middleware que valida los datos

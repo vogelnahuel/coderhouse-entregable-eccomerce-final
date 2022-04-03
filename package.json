@@ -7,9 +7,9 @@
     "start:dev": "nodemon -e ts --exec \"npm run compile\" ",
     "test": "mocha --timeout 10000 -r ts-node/register \"tests/*.spec.ts\"  ",
     "start:prod": "nodemon -e ts --exec \"npm run compile\"",
-    "compile": "tsc && node dist/js/app.js",
-    "server": "node dist/js/app.js",
-    "build": "tsc && node dist/js/app.js"
+    "compile": "tsc && node dist/js/src/app.js",
+    "server": "node dist/js/src/app.js",
+    "build": "tsc && node dist/js/src/app.js"
   },
   "keywords": [],
   "author": "",

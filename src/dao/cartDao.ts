@@ -1,13 +1,16 @@
 import moment from "moment";
 import mongoose from "mongoose";
-import { ProductsDao } from "./productDao";
-
+import {FactoryCreateDao}  from "./FactoryCreate";
 const ObjectId = require("mongodb").ObjectId;
-
 import cartModel from "../models/schemas/cartSchema";
 import { NotFound } from "../utils/errorsClass";
 import { CartUser } from "../interfaces/cartInterfaces";
-/**
+
+
+
+
+ let instance:CartDao = null;
+ /**
  *  CartDao
  *  @brief hace peticiones a la base de cart
  */
@@ -17,7 +20,7 @@ export class CartDao {
    *  @param IdUserCart Id de usuario
    *  @returns  CartUser o error
    */
-  static async getByIdUser(IdUserCart: string): Promise<CartUser> {
+  async getByIdUser(IdUserCart: string): Promise<CartUser> {
     const isValid: boolean = mongoose.Types.ObjectId.isValid(IdUserCart);
     if (isValid) {
       const getCarrito:CartUser = await cartModel.findOne({ _idUser: IdUserCart });
@@ -32,7 +35,7 @@ export class CartDao {
    *  @param IdCarrito IdCarrito
    *  @returns  CartUser o error
    */
-  static async getById(IdCarrito: string): Promise<CartUser> {
+   async getById(IdCarrito: string): Promise<CartUser> {
     const isValid: boolean = mongoose.Types.ObjectId.isValid(IdCarrito);
     if (isValid) {
       const getCarrito: CartUser = await cartModel.findById(IdCarrito);
@@ -47,7 +50,7 @@ export class CartDao {
    *  @param idUser id de usuario
    *  @returns  CartUser o error
    */
-  static async addCarrito(idUser: string): Promise<CartUser> {
+   async addCarrito(idUser: string): Promise<CartUser> {
     const isValid: boolean = mongoose.Types.ObjectId.isValid(idUser);
     if (isValid) {
       const newCarrito = {
@@ -69,10 +72,15 @@ export class CartDao {
    *  @params idCart  idProduct
    */
 
-  static async addProduct(idCart: string, idProduct: string) {
+   async addProduct(idCart: string, idProduct: string) {
+   
+    const factory:FactoryCreateDao = FactoryCreateDao.getInstance();
+    const   {ProductsDao}  = await factory.createInstances()
+
     const isValid: boolean = mongoose.Types.ObjectId.isValid(idCart);
     const isValidProd: boolean = mongoose.Types.ObjectId.isValid(idProduct);
     if (isValid && isValidProd) {
+
       let productoSeleccionado = await ProductsDao.getById(idProduct);
 
       const update = await cartModel.updateOne(
@@ -90,7 +98,7 @@ export class CartDao {
    *  @brief elimina un carrito
    *  @param idCart  idCart
    */
-  static async delete(idCart: string) {
+   async delete(idCart: string) {
     const isValid: boolean = mongoose.Types.ObjectId.isValid(idCart);
     if (isValid) {
       const deleted = await cartModel.deleteOne({ _id: idCart });
@@ -105,7 +113,7 @@ export class CartDao {
    *  @brief elimina un producto de un  carrito
    *  @params idUser  productId
    */
-  static async deleteProduct(idUser: string, productId: string) {
+   async deleteProduct(idUser: string, productId: string) {
     const isValid: boolean = mongoose.Types.ObjectId.isValid(idUser);
     const isValidProd: boolean = mongoose.Types.ObjectId.isValid(productId);
     if (isValid && isValidProd) {
@@ -120,5 +128,11 @@ export class CartDao {
     } else {
       throw new NotFound("El id pasado es invalido");
     }
+  }
+  static getInstance(){
+    if(!instance){
+      instance = new CartDao();
+    }
+    return instance;
   }
 }

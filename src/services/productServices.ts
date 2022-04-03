@@ -1,12 +1,13 @@
-
 import {
   ProductRequest,
   Products,
   ProductUpdateRequest,
 } from "../interfaces/productInterfaces";
-import { ProductsDao } from "../dao/productDao";
+
 import { success } from "../interfaces/usersInterfaces";
 import moment from "moment";
+import { FactoryCreateDao } from "../dao/FactoryCreate";
+import { ProductsDao } from "../dao/productDao";
 
 /**
  *  ProductService
@@ -14,18 +15,22 @@ import moment from "moment";
  *
  */
 export class ProductService {
-    /**
+  static ProductsDaoService: ProductsDao;
+  /**
    *  @brief obtiene un  producto o un Productos[]
    *  @param data id de producto
    *  @returns  Products | Products[] o error
    */
+
   public static async productGetService(
     data?: string
   ): Promise<Products | Products[]> {
+    const factory: FactoryCreateDao = FactoryCreateDao.getInstance();
+    const { ProductsDao } = await factory.createInstances();
     let contenidoProductos: Products | Products[] = await ProductsDao.get(data);
     return contenidoProductos;
   }
-    /**
+  /**
    *  @brief crea un producto
    *  @param data ProductRequest
    *  @returns  success o error
@@ -33,12 +38,21 @@ export class ProductService {
   public static async productCreateService(
     data: ProductRequest
   ): Promise<success> {
+    const factory: FactoryCreateDao = FactoryCreateDao.getInstance();
+    const { ProductsDao } = await factory.createInstances();
     const { name, description, code, price, stock, photo } = data;
 
-    await ProductsDao.add({ name, description, code, price, stock, photo });
+    await ProductsDao.add({
+      name,
+      description,
+      code,
+      price,
+      stock,
+      photo,
+    });
     return { text: "se creo con exito" };
   }
-   /**
+  /**
    *  @brief actualiza un producto
    *  @param data ProductUpdateRequest
    *  @returns  ProductUpdateRequest o error
@@ -46,6 +60,8 @@ export class ProductService {
   public static async productUpdateService(
     data: ProductUpdateRequest
   ): Promise<ProductUpdateRequest> {
+    const factory: FactoryCreateDao = FactoryCreateDao.getInstance();
+    const { ProductsDao } = await factory.createInstances();
     const timestamp: string = `${moment().format("DD MM YYYY hh:mm")}`;
     await ProductsDao.update({
       _id: data._id,
@@ -60,12 +76,14 @@ export class ProductService {
 
     return data;
   }
-   /**
+  /**
    *  @brief elimina un producto
    *  @param data id producto
    *  @returns  success o error
    */
   public static async productDeleteService(data: string): Promise<success> {
+    const factory: FactoryCreateDao = FactoryCreateDao.getInstance();
+    const { ProductsDao } = await factory.createInstances();
     await ProductsDao.delete(data);
     return { text: "se elimino con exito" };
   }

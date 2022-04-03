@@ -7,7 +7,9 @@ import {
   Products,
   ProductUpdateRequest,
 } from "../interfaces/productInterfaces";
-/**
+
+ let instance:ProductsDao = null;
+ /**
  *  ProductsDao
  *  @brief hace peticiones a la base de Products
  */
@@ -17,7 +19,7 @@ export class ProductsDao {
    *  @param idParam Id de producto
    *  @returns  Products | Products[] o error
    */
-  static async get(idParam?: string):Promise<Products | Products[]> {
+   async get(idParam?: string):Promise<Products | Products[]> {
     if (idParam) {
       const productList: Products = await this.getById(idParam);
       if (!productList)
@@ -41,7 +43,7 @@ export class ProductsDao {
    *  @param productId Id de producto
    *  @returns  Products o error
    */
-  static async getById(productId: string) {
+   async getById(productId: string) {
     const isValid = mongoose.Types.ObjectId.isValid(productId);
     if (isValid) {
       const getProduct = await productModel.findById(productId);
@@ -56,7 +58,7 @@ export class ProductsDao {
    *  @param data ProductRequest
    *  @returns  Products o error
    */
-  static async add(data: ProductRequest) {
+   async add(data: ProductRequest) {
     const newProduct = {
       _id: new mongoose.Types.ObjectId().toHexString(),
       name: data.name,
@@ -78,7 +80,7 @@ export class ProductsDao {
    *  @brief elimina un producto haciendo la peticion a la base
    *  @param productId string
    */
-  static async delete(productId:string) {
+   async delete(productId:string) {
     const isValid = mongoose.Types.ObjectId.isValid(productId);
     if (isValid) {
       const result = await productModel.findOneAndDelete({ _id: productId });
@@ -91,7 +93,7 @@ export class ProductsDao {
    *  @brief actualiza un producto haciendo la peticion a la base
    *  @param newData ProductUpdateRequest
    */
-  static async update(newData: ProductUpdateRequest) {
+   async update(newData: ProductUpdateRequest) {
     const isValid = mongoose.Types.ObjectId.isValid(newData._id);
     if (isValid) {
       const update = await productModel.findOneAndUpdate(
@@ -104,5 +106,11 @@ export class ProductsDao {
     } else {
       throw new NotFound("El id pasado es invalido");
     }
+  }
+  static getInstance(){
+    if(!instance){
+      instance = new ProductsDao();
+    }
+    return instance;
   }
 }

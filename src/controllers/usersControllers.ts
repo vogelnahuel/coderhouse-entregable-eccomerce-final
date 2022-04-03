@@ -13,7 +13,7 @@ const loggerFile = log4js.getLogger('archivo')
  *
  */
 export class UsersController {
-  constructor(private readonly _loginService = new UserService()) {}
+  
 
     /**
    * @brief  controla la ruta de obtencion de usuarios

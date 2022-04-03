@@ -13,7 +13,7 @@ const loggerFile = log4js.getLogger("archivo");
  *
  */
 export class CartController {
-  constructor(private readonly _cartService = new CartService()) {}
+
   /**
    * @brief  controla la ruta de creacion de carritos
    * @param req  recibe en el body CartCreate

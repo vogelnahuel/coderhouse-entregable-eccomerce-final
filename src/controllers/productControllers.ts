@@ -17,7 +17,7 @@ const loggerFile = log4js.getLogger("archivo");
  *
  */
 export class ProductController {
-  constructor(private readonly _cartService = new ProductService()) {}
+  
   /**
    * @brief  controla la ruta de obtencion de productos
    * @param req  recibe en el params id o null

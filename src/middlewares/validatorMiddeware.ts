@@ -1,13 +1,13 @@
 import { validate } from "class-validator";
 import { Request, Response, NextFunction } from "express";
-import { ProductUpdateRequest } from "../models/request/ProductUpdate";
-import { ProductCreateRequest } from "../models/request/ProductCreate";
-import { UsersBuyRequest } from "../models/request/UsersBuy";
-import { UsersCreateRequest } from "../models/request/UsersCreate";
-import { UsersLoginRequest } from "../models/request/UsersLogin";
+import { ProductUpdateRequest } from "../models/requestDTO/ProductUpdateDTO";
+import { ProductCreateRequest } from "../models/requestDTO/ProductCreateDTO";
+import { UsersBuyRequest } from "../models/requestDTO/UsersBuyDTO";
+import { UsersCreateRequest } from "../models/requestDTO/UsersCreateDTO";
+import { UsersLoginRequest } from "../models/requestDTO/UsersLoginDTO";
 import { Http } from "../utils/http";
-import { CartCreateRequest } from "../models/request/CartCreate";
-import { CartAddProductRequest } from "../models/request/CartAddProduct";
+import { CartCreateRequest } from "../models/requestDTO/CartCreateDTO";
+import { CartAddProductRequest } from "../models/requestDTO/CartAddProductDTO";
 
 /**
  * @brief verifica los datos pasados contenga algun error

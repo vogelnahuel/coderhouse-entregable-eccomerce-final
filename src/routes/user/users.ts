@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { validatorMiddeware } from "../../middlewares/validatorMiddeware";
 import { UsersController } from "../../controllers/usersControllers";
-import { UsersCreateRequest } from "../../models/request/UsersCreate";
-import { UsersLoginRequest } from '../../models/request/UsersLogin';
-import { UsersBuyRequest } from '../../models/request/UsersBuy';
+import { UsersCreateRequest } from "../../models/requestDTO/UsersCreateDTO";
+import { UsersLoginRequest } from '../../models/requestDTO/UsersLoginDTO';
+import { UsersBuyRequest } from '../../models/requestDTO/UsersBuyDTO';
 import passport from "passport";
 /**
  *  @brief inicializa las rutas con su path por defecto y validatorMiddeware middleware que valida los datos
@@ -36,7 +36,7 @@ const routerUsers = Router();
 routerUsers.post(
   "/create",
   (req, res, next) =>
-    validatorMiddeware<UsersCreateRequest>(req, res, next, new UsersCreateRequest())
+    validatorMiddeware<UsersCreateRequest>(req, res, next, new UsersCreateRequest()) // inyeccion de dependencias
     ,passport.authenticate("signup"),
     
   UsersController.usersPostCreate

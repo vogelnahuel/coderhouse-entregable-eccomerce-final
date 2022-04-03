@@ -1,3 +1,4 @@
+import { UserDto } from "../models/responseDTO/usersDto";
 import { CartUser } from "./cartInterfaces";
 import { Products } from "./productInterfaces";
 
@@ -39,7 +40,7 @@ export interface success {
 export interface LoginPostSucess {
   token: string;
   cartUser: CartUser;
-  User: User;
+  User: UserDto;
 }
 
 
