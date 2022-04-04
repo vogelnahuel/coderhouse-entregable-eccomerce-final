@@ -7,7 +7,7 @@ import {
 import { success } from "../interfaces/usersInterfaces";
 import moment from "moment";
 import { FactoryCreateDao } from "../dao/FactoryCreate";
-import { ProductsDao } from "../dao/productDao";
+
 
 /**
  *  ProductService
@@ -15,7 +15,7 @@ import { ProductsDao } from "../dao/productDao";
  *
  */
 export class ProductService {
-  static ProductsDaoService: ProductsDao;
+  
   /**
    *  @brief obtiene un  producto o un Productos[]
    *  @param data id de producto

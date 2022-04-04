@@ -1,5 +1,5 @@
 export interface Products {
-  _id: string;
+  _id: string | number;
   name: string;
   price: number;
   stock: number;
@@ -7,7 +7,7 @@ export interface Products {
   code: string;
   description: string;
   timestamp: string;
-  __v: number;
+  __v?: number;
 }
 
 export interface ProductRequest {

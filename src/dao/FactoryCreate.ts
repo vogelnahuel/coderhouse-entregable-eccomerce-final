@@ -1,24 +1,30 @@
-import { CartDao } from "./cartDao";
-import { ProductsDao } from "./productDao";
-import { UserDao } from "./usersDao";
-import mongoose from "mongoose";
-import mongoDB from "../constants/mongoUrl";
+import { CartDao } from "./mongo/cartDao";
+import { ProductsDao } from "./mongo/productDao";
+import { UserDao } from "./mongo/usersDao";
+import { ProductMysql } from "./mysql/ProductDaoMysql";
+import { CartMysql } from "./mysql/CartDaoMysql";
+import { UserMysql } from "./mysql/UserDaoMysql";
 
 let instance = null;
 //PATRON FACTORY
 export class FactoryCreateDao {
   constructor() {}
   public async createInstances() {
+
     if (process.env.DATABASE === "mongo") {
-       await mongoose.connect(mongoDB);
+       
       return {
         ProductsDao: ProductsDao.getInstance(),
         CartDao: CartDao.getInstance(),
         UserDao: UserDao.getInstance(),
       };
-    } else if (process.env.DATABASE === "firebase") {
-    } else if (process.env.DATABASE === "mysql"){
-      
+    }
+    else if (process.env.DATABASE === "mysql"){
+      return {
+        ProductsDao: ProductMysql.getInstance(),
+        CartDao: CartMysql.getInstance(),
+        UserDao: UserMysql.getInstance(),
+      };
     }
   }
   

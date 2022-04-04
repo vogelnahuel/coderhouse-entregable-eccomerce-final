@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import moment from "moment";
-import productModel from "../models/schemas/productSchema";
-import { NotFound } from "../utils/errorsClass";
+import productModel from "../../models/schemas/productSchema";
+import { NotFound } from "../../utils/errorsClass";
 import {
   ProductRequest,
   Products,
   ProductUpdateRequest,
-} from "../interfaces/productInterfaces";
+} from "../../interfaces/productInterfaces";
 
  let instance:ProductsDao = null;
  /**

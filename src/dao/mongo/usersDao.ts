@@ -1,8 +1,8 @@
-import { User } from '../interfaces/usersInterfaces';
-import userModel from "../models/schemas/userSchema";
-import { NotFound } from "../utils/errorsClass";
-import { UserDto } from "../models/responseDTO/usersDto";
-import { UserDtoLogin } from "../models/responseDTO/userDtoLogin";
+import { User } from '../../interfaces/usersInterfaces';
+import userModel from "../../models/schemas/userSchema";
+import { NotFound } from "../../utils/errorsClass";
+import { UserDto } from "../../models/responseDTO/usersDto";
+import { UserDtoLogin } from "../../models/responseDTO/userDtoLogin";
 /**
  *  UserDao
  *  @brief hace peticiones a la base de Usuarios

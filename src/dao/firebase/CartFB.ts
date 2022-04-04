@@ -1,0 +1,120 @@
+
+import moment from "moment";
+
+
+import admin from "firebase-admin";
+
+export class DaoCarritoFB {
+    query: admin.firestore.CollectionReference<admin.firestore.DocumentData>
+    db: admin.firestore.Firestore
+ constructor() {
+   this.db = admin.firestore();
+   this.query = this.db.collection("carritos")
+ }
+ async get() {
+   try {
+     const querySnapshot = await this.query.get()
+     let docs = querySnapshot.docs;
+     if (docs.length == 0)
+       throw {
+         status: 404,
+         msg: "Todavia no hay carritos cargados en tu base de datos",
+       };
+
+     const response = docs.map((doc) => ({
+       id: doc.id,
+       productos: doc.data().productos,
+       timestamp: doc.data().timestamp
+     }))
+     return response;
+   } catch (error) {
+     throw error;
+   }
+ }
+
+ async getById(productId) {
+   try {
+     const docId = this.query.doc(productId)
+     const getProduct = await docId.get();
+
+     if (!getProduct)
+       throw {
+         status: 404,
+         msg: "El carrito solicitado no existe",
+       };
+     return getProduct.data();
+   } catch (error) {
+     throw error;
+   }
+ }
+
+ async addCarrito() {
+   try {
+     const newCarrito = {
+       productos: [],
+       timestamp: `${moment().format("DD MM YYYY hh:mm")}`
+     }
+     let doc = this.query.doc();
+     await doc.create(newCarrito)
+     return newCarrito;
+   } catch (error) {
+     throw error;
+   }
+ }
+ async delete(carritoId) {
+   try {
+     let doc = this.query.doc(carritoId)
+     await doc.delete()
+   } catch (error) {
+     throw error;
+   }
+ }
+
+
+
+
+ async addProduct(idUser, idProduct) {
+
+   let productoSeleccionado;
+
+   const productos = admin.firestore().collection("productos")
+
+   try {
+     const docId = productos.doc(idProduct)
+     productoSeleccionado = await docId.get();
+   } catch (error) {
+     throw error;
+   }
+
+   try {
+ 
+     const objProduct = {
+       ...productoSeleccionado.data(),
+       _id:productoSeleccionado.id
+     }
+     const docId = this.query.doc(idUser)
+     await docId.update({
+       productos: admin.firestore.FieldValue.arrayUnion(objProduct)
+     })
+   } catch (error) {
+     throw error;
+   }
+
+ }
+
+ async deleteProduct(idUser, productId) {
+
+
+   try {
+     const docId = this.query.doc(idUser)
+     await docId.update({
+       productos: admin.firestore.FieldValue.arrayRemove({"_id":productId})
+    });
+
+   } catch (error) {
+     throw error;
+   }
+
+ }
+
+}

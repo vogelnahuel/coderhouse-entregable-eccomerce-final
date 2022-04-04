@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { IsNotEmpty, IsString, IsNumber, Length } from "class-validator";
 
 /**
  *  ProductCreateRequest
@@ -25,6 +25,7 @@ export class ProductCreateRequest {
 
   @IsNotEmpty()
   @IsString()
+  @Length(1,10)
   code:string;
 
   @IsNotEmpty()

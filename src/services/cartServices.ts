@@ -1,4 +1,4 @@
-import { CartDao } from "../dao/cartDao";
+
 import { FactoryCreateDao } from "../dao/FactoryCreate";
 import {
   cartProduct,
@@ -15,7 +15,7 @@ import { success } from "../interfaces/usersInterfaces";
  */
 
 export class CartService {
-  static CartDaoService: CartDao;
+
   /**
    *  @brief crea un nuevo carrito
    *  @param data idUser
