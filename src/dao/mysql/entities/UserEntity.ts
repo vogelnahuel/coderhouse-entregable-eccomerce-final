@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm"
+import { Carts } from "./CartEntity"
 /*CREATE TABLE users (
     _id int not null AUTO_INCREMENT,
     email varchar(100),
@@ -15,6 +16,10 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
 export class Users extends BaseEntity {
     @PrimaryGeneratedColumn()
     _id: number
+
+    @OneToMany(() => Carts, Carts => Carts.idUser)
+    Carts: Carts[];
+
 
     @Column({
         length: 100,
@@ -49,4 +54,5 @@ export class Users extends BaseEntity {
     })
     avatar: string
 
+  
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from "typeorm"
+import { CartProducts } from "./CartProductEntity";
 import { Users } from "./UserEntity"
 /*CREATE TABLE carts (
   _id int not null AUTO_INCREMENT PRIMARY KEY,
@@ -25,9 +26,12 @@ export class Carts extends BaseEntity {
     @PrimaryGeneratedColumn()
     _id: number
     
-    @OneToOne(() => Users)
-    @JoinColumn()
-    user: Users
+
+    @ManyToOne(() => Users, Users => Users.Carts)
+    idUser: number;
+
+    @OneToMany(() => CartProducts, CartProducts => CartProducts.idCart)
+    productsCart: CartProducts[];
 
     @Column({
       length: 50,

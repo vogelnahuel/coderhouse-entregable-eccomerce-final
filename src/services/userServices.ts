@@ -21,7 +21,7 @@ const smtpTransport = createTransport({
   secure: true, // use SSL
   auth: {
     user: "vogelgonzalonahuel@gmail.com",
-    pass: "txcyxroqsjnjtqan",
+    pass: "cmclswbygvwikuih",
   },
 });
 
@@ -75,6 +75,7 @@ export class UserService {
 
     let User: UserDto = await Instances.UserDao.getCarrito(data.email);
 
+  
     let cartUser: CartUser = await Instances.CartDao.getByIdUser(User._id);
 
     const token = generateToken(data.email);
@@ -83,6 +84,8 @@ export class UserService {
       cartUser,
       User,
     };
+
+
     return carritoUserRes;
   }
 
@@ -108,15 +111,15 @@ export class UserService {
       throw new NotFound("The MAIL_OPTIONS is invalid");
     }
 
-    try {
-      await client.messages.create({
-        from: "whatsapp:+14155238886",
-        body: `nuevo pedido de ${name} ${email}`,
-        to: `whatsapp:${phone}`,
-      });
-    } catch (error) {
-      throw new NotFound("The messages is invalid");
-    }
+    // try {
+    //   await client.messages.create({
+    //     from: "whatsapp:+14155238886",
+    //     body: `nuevo pedido de ${name} ${email}`,
+    //     to: `whatsapp:${phone}`,
+    //   });
+    // } catch (error) {
+    //   throw new NotFound("The messages is invalid");
+    // }
     return { text: "se creo con exito" };
   }
 }

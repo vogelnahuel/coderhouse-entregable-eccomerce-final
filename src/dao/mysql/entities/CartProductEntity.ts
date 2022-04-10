@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from 'typeorm';
 import { Carts } from "./CartEntity"
 import { products } from "./ProductEntity"
 /*CREATE TABLE cartproducts (
@@ -20,13 +20,12 @@ export class CartProducts extends BaseEntity {
     @PrimaryGeneratedColumn()
     _id: number
 
-    @OneToOne(() => Carts)
-    @JoinColumn()
-    Cart: Carts
+    @ManyToOne(() => products, Users => Users.productsCart)
+    idProduct: number;
 
-    @OneToOne(() => products)
-    @JoinColumn()
-    Product: products
+    @ManyToOne(() => Carts, Users => Users.productsCart)
+    idCart: number;
+
 
     @Column({
       length: 50,
@@ -58,4 +57,5 @@ export class CartProducts extends BaseEntity {
       length: 50,
   })
     timestamp: string
+
 }

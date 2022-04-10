@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column,OneToMany, BaseEntity } from "typeorm"
+import { CartProducts } from "./CartProductEntity";
 /**CREATE TABLE products (
     _id int not null AUTO_INCREMENT,
     name varchar(50),
@@ -14,6 +15,10 @@ import { Entity, PrimaryGeneratedColumn, Column,OneToMany, BaseEntity } from "ty
 export class products extends BaseEntity {
     @PrimaryGeneratedColumn()
     _id: number
+
+    @OneToMany(() => CartProducts, Carts => Carts.idProduct)
+    productsCart: CartProducts[];
+
 
     @Column({
         length: 50,
@@ -45,4 +50,7 @@ export class products extends BaseEntity {
         length: 50,
     })
     timestamp: string
+
+
+
 }

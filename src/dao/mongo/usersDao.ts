@@ -3,6 +3,7 @@ import userModel from "../../models/schemas/userSchema";
 import { NotFound } from "../../utils/errorsClass";
 import { UserDto } from "../../models/responseDTO/usersDto";
 import { UserDtoLogin } from "../../models/responseDTO/userDtoLogin";
+import { Users } from '../mysql/entities/UserEntity';
 /**
  *  UserDao
  *  @brief hace peticiones a la base de Usuarios
@@ -30,7 +31,7 @@ export class UserDao {
     return getUser;
   }
 
-  async create(newUser: User):Promise<User> {
+  async create(newUser: User | Users):Promise<User> {
     const getUser:User =  await userModel.create(newUser);
 
     if (!getUser) throw new NotFound("Error al crear ");

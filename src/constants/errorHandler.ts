@@ -25,5 +25,12 @@ export const HTTP_ERROR_HANDLER = ({ error, res }):void => {
     [ERROR.CastError]: () => Http.BadRequest(error.message, res),
   };
 
-  ERROR_SELECTOR[error.constructor.name]();
+  if(ERROR_SELECTOR[error.constructor.name]){
+    ERROR_SELECTOR[error.constructor.name]();
+  }
+  else{
+    Http.InternalServerError(error,res)
+  }
+
+
 };

@@ -20,137 +20,188 @@ CREATE TABLE cartproducts (
 );*/
 import moment from "moment";
 import mongoose from "mongoose";
-import {FactoryCreateDao}  from "../FactoryCreate";
+import { FactoryCreateDao } from "../FactoryCreate";
 const ObjectId = require("mongodb").ObjectId;
 import cartModel from "../../models/schemas/cartSchema";
 import { NotFound } from "../../utils/errorsClass";
 import { CartUser } from "../../interfaces/cartInterfaces";
+import { AppDataSource } from "../../app";
+import { Carts } from "./entities/CartEntity";
+import { CartProducts } from "./entities/CartProductEntity";
+import { Repository } from "typeorm";
 
-
-
-
- let instance:CartMysql = null;
- /**
+let instance: CartMysql = null;
+/**
  *  CartDao
  *  @brief hace peticiones a la base de cart
  */
 export class CartMysql {
-    /**
+  /**
    *  @brief busca por id de usuario a un carrito
    *  @param IdUserCart Id de usuario
    *  @returns  CartUser o error
    */
-  async getByIdUser(IdUserCart: string): Promise<CartUser> {
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(IdUserCart);
-    if (isValid) {
-      const getCarrito:CartUser = await cartModel.findOne({ _idUser: IdUserCart });
-      if (!getCarrito) throw new NotFound("El carrito solicitado no existe");
-      return getCarrito;
+  cartRepository: Repository<Carts>;
+  cartProductRepository;
+  constructor() {
+    this.cartRepository = AppDataSource.getRepository(Carts);
+    this.cartProductRepository = AppDataSource.getRepository(CartProducts);
+  }
+
+  async getByIdUser(user_id: string): Promise<any> {
+    const getCarrito = await this.cartRepository
+      .createQueryBuilder("carts")
+      .where("carts.idUser_id = :user_id", { user_id: user_id })
+      .getOne();
+    if (!getCarrito) throw new NotFound("El carrito solicitado no existe");
+
+    const getCartProducts = await this.cartProductRepository
+      .createQueryBuilder("cart_products")
+      .where("cart_products.idCart_id = :cart_id", { cart_id: getCarrito._id })
+      .getMany();
+
+ 
+      
+    if (!getCartProducts) {
+      return { ...getCarrito, products: [] };
     } else {
-      throw new NotFound("El id pasado es invalido");
+      return { ...getCarrito, products:getCartProducts };
     }
   }
-   /**
+
+  /**
    *  @brief busca por id de carrito a un carrito
    *  @param IdCarrito IdCarrito
    *  @returns  CartUser o error
    */
-   async getById(IdCarrito: string): Promise<CartUser> {
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(IdCarrito);
-    if (isValid) {
-      const getCarrito: CartUser = await cartModel.findById(IdCarrito);
-      if (!getCarrito) throw new NotFound("El carrito solicitado no existe");
-      return getCarrito;
+  async getById(IdCarrito: string): Promise<any> {
+    const getCarrito = await this.cartRepository
+      .createQueryBuilder("carts")
+      .where("carts._id = :_id", { _id: IdCarrito })
+      .getOne();
+    if (!getCarrito) throw new NotFound("El carrito solicitado no existe");
+
+    const getCartProducts = await this.cartProductRepository
+      .createQueryBuilder("cart_products")
+      .where("cart_products.idCart_id = :cart_id", { cart_id: getCarrito._id })
+      .getMany();
+
+
+
+    if (!getCartProducts) {
+      return { ...getCarrito, products: [] };
     } else {
-      throw new NotFound("El id pasado es invalido");
+      return { ...getCarrito, products:getCartProducts};
     }
   }
-   /**
+
+  /**
    *  @brief crea un nuevo carrito
    *  @param idUser id de usuario
    *  @returns  CartUser o error
    */
-   async addCarrito(idUser: string): Promise<CartUser> {
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(idUser);
-    if (isValid) {
-      const newCarrito = {
-        _id: new mongoose.Types.ObjectId().toHexString(),
-        _idUser: idUser,
-        products: [],
-        timestamp: `${moment().format("DD MM YYYY hh:mm")}`,
-      };
-      const addCarrito: CartUser = await cartModel.create(newCarrito);
-      if (!addCarrito) throw new NotFound("error al crear carrito");
-      return addCarrito;
-    } else {
-      throw new NotFound("El id pasado es invalido");
-    }
+
+  async addCarrito(idUser: string): Promise<any> {
+    const newCarrito = new Carts();
+
+    newCarrito.idUser = parseInt(idUser);
+    newCarrito.timestamp = `${moment().format("DD MM YYYY hh:mm")}`;
+
+    const addCarrito = await this.cartRepository
+      .createQueryBuilder()
+      .insert()
+      .into("carts")
+      .values(newCarrito)
+      .execute();
+
+    if (!addCarrito) throw new NotFound("error al crear carrito");
+
+    return addCarrito;
   }
 
-    /**
-   *  @brief agrega un  nuevo  producto a  un carrito
-   *  @params idCart  idProduct
-   */
-
-   async addProduct(idCart: string, idProduct: string) {
-   
-    const factory:FactoryCreateDao = FactoryCreateDao.getInstance();
-    const   {ProductsDao}  = await factory.createInstances()
-
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(idCart);
-    const isValidProd: boolean = mongoose.Types.ObjectId.isValid(idProduct);
-    if (isValid && isValidProd) {
-
-      let productoSeleccionado = await ProductsDao.getById(idProduct);
-
-      const update = await cartModel.updateOne(
-        { _id: idCart },
-        { $push: { products: productoSeleccionado } }
-      );
-
-      if (update.modifiedCount === 0)
-        throw new NotFound("el carrito no existe");
-    } else {
-      throw new NotFound("El id pasado es invalido");
-    }
-  }
   /**
    *  @brief elimina un carrito
    *  @param idCart  idCart
    */
-   async delete(idCart: string) {
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(idCart);
-    if (isValid) {
-      const deleted = await cartModel.deleteOne({ _id: idCart });
+  async delete(idCart: string) {
+    const cast = parseInt(idCart);
 
-      if (deleted.deletedCount === 0)
-        throw new NotFound("no existe el carrito");
-    } else {
-      throw new NotFound("El id pasado es invalido");
-    }
+    await this.cartProductRepository
+      .createQueryBuilder()
+      .delete()
+      .from("cart_products")
+      .where("cart_products.idCart_id = :_id", { _id: cast })
+      .execute();
+
+    const cartDelete = await this.cartRepository
+      .createQueryBuilder()
+      .delete()
+      .from("carts")
+      .where("carts._id = :_id", { _id: cast })
+      .execute();
+
+    if (cartDelete.affected === 0)
+      throw new NotFound(" el carrito solicitado no existe");
   }
-/**
+  /**
+   *  @brief agrega un  nuevo  producto a  un carrito
+   *  @params idCart  idProduct
+   */
+  async addProduct(idCart: string, idProduct: string) {
+    const factory: FactoryCreateDao = FactoryCreateDao.getInstance();
+    const { ProductsDao } = await factory.createInstances();
+
+    const productoSeleccionado = await ProductsDao.getById(idProduct);
+
+    console.log("PRODUCTO SELECCIONADOOOOOO", productoSeleccionado);
+
+    const cartProduct = new CartProducts();
+    cartProduct.idCart = parseInt(idCart);
+    cartProduct.idProduct = parseInt(idProduct);
+    cartProduct.name = productoSeleccionado.name;
+    cartProduct.price = productoSeleccionado.price;
+    cartProduct.stock = productoSeleccionado.stock;
+    cartProduct.photo = productoSeleccionado.photo;
+    cartProduct.code = productoSeleccionado.code;
+    cartProduct.description = productoSeleccionado.description;
+    cartProduct.timestamp = productoSeleccionado.timestamp;
+    const add = await this.cartProductRepository
+      .createQueryBuilder()
+      .insert()
+      .into("cart_products")
+      .values(cartProduct)
+      .execute();
+
+      console.log(add)
+    if (!add)
+      throw new NotFound("Error al insertar  el producto en el carrito");
+  }
+
+  /**
    *  @brief elimina un producto de un  carrito
    *  @params idUser  productId
    */
-   async deleteProduct(idUser: string, productId: string) {
-    const isValid: boolean = mongoose.Types.ObjectId.isValid(idUser);
-    const isValidProd: boolean = mongoose.Types.ObjectId.isValid(productId);
-    if (isValid && isValidProd) {
-      const msg = await cartModel.updateOne(
-        { _id: idUser },
-        { $pull: { products: { _id: ObjectId(productId) } } }
-      );
 
-      if (msg.modifiedCount === 0) {
-        throw new NotFound("El producto solicitado no existe en el carrito");
-      }
-    } else {
-      throw new NotFound("El id pasado es invalido");
+  async deleteProduct(idCart: string, productId: string) {
+    const cast = parseInt(idCart);
+    const castProd = parseInt(productId);
+
+    const msg = await this.cartProductRepository
+      .createQueryBuilder()
+      .delete()
+      .from("cart_products")
+      .where(
+        "cart_products.cart_id = :_id AND cart_products.product_id = : _idProduct",
+        { _id: cast, _idProduct: castProd }
+      )
+      .execute();
+    if (msg.modifiedCount === 0) {
+      throw new NotFound("El producto solicitado no existe en el carrito");
     }
   }
-  static getInstance(){
-    if(!instance){
+
+  static getInstance() {
+    if (!instance) {
       instance = new CartMysql();
     }
     return instance;
