@@ -6,16 +6,11 @@ import { validatorMiddeware } from "../src/middlewares/validatorMiddeware";
 import httpMocks from "node-mocks-http";
 import faker from "faker";
 require("dotenv").config();
-
 import { generateToken, verifyToken } from "../src/utils/token";
 import { UsersLoginRequest } from "../src/models/requestDTO/UsersLoginDTO";
 import { UserService } from "../src/services/userServices";
-
 import { CartUser } from "../src/interfaces/cartInterfaces";
-
 import { UsersController } from "../src/controllers/usersControllers";
-import { UserDao } from "../src/dao/mongo/usersDao";
-import { CartDao } from "../src/dao/mongo/cartDao";
 import { UserDto } from "../src/models/responseDTO/usersDto";
 import { FactoryCreateDao } from "../src/dao/FactoryCreate";
 
@@ -157,25 +152,8 @@ describe("Users Login", () => {
 
     expect(res.User.email).to.equal("vogelnahuel@gmail.com");
   });
-//   it("User userDao getCarrito Positive", async () => {
-//     // const stub =  sinon.stub(UserDao, "getCarrito").resolves(stubValue);
-//     // const stub = sinon.stub(UserModel, "create").returns(stubValue);
-//     // expect(user.id).to.equal(stubValue.id);
-//     const res = await UserDao.getCarrito("vogelnahuel@gmail.com");
 
-//     expect(res.email).to.equal("vogelnahuel@gmail.com");
-//   });
-//   /**
-//    *
-//    *  @brief  verifica que la respuesta del metodo funcione incorrectamente
-//    *  @assert  compara res si es igual a falso
-//    */
-//   it("User userDao getCarrito Negative", async () => {
-//     // const stub =  sinon.stub(UserDao, "getCarrito").resolves(stubValue);
-//     const res = await UserDao.getCarrito("notFound@gmail.com");
 
-//     expect(res.email).to.equal("vogelnahuel@gmail.com");
-//   });
 
   /**
    *

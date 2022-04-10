@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { ProductUpdateRequest } from "../../models/requestDTO/ProductUpdateDTO";
 import { validatorMiddeware } from "../..//middlewares/validatorMiddeware";
-import { ProductController } from "../../controllers/productControllers";
 import { ProductCreateRequest } from "../../models/requestDTO/ProductCreateDTO";
+import { ProductController } from "../../controllers/productControllers";
 /**
  *  @brief inicializa las rutas con su path por defecto y validatorMiddeware middleware que valida los datos
  */
