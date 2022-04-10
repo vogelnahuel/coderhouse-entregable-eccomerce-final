@@ -6,6 +6,7 @@
   "scripts": {
     "start:dev": "nodemon -e ts --exec \"npm run compile\" ",
     "test": "mocha --timeout 10000 -r ts-node/register \"tests/*.spec.ts\"  ",
+    "test:coverage": "nyc --reporter=text mocha --timeout 10000 -r ts-node/register \"tests/*.spec.ts\"  ",
     "start:prod": "nodemon -e ts --exec \"npm run compile\"",
     "compile": "tsc && node dist/js/src/app.js",
     "server": "node dist/js/src/app.js",
@@ -34,6 +35,7 @@
     "mocha": "^9.2.2",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
     "sinon": "^13.0.1",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
@@ -47,7 +49,6 @@
     "express": "^4.17.3",
     "firebase-admin": "^10.0.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^1.0.4",
     "moment": "^2.29.1",
     "mongoose": "^6.2.8",
     "mysql": "^2.18.1",

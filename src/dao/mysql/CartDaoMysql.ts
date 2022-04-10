@@ -153,8 +153,6 @@ export class CartMysql {
 
     const productoSeleccionado = await ProductsDao.getById(idProduct);
 
-    console.log("PRODUCTO SELECCIONADOOOOOO", productoSeleccionado);
-
     const cartProduct = new CartProducts();
     cartProduct.idCart = parseInt(idCart);
     cartProduct.idProduct = parseInt(idProduct);
@@ -172,7 +170,6 @@ export class CartMysql {
       .values(cartProduct)
       .execute();
 
-      console.log(add)
     if (!add)
       throw new NotFound("Error al insertar  el producto en el carrito");
   }

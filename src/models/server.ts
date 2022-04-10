@@ -1,6 +1,6 @@
 import express from "express";
 import routerUser from "../routes/user/users";
-import routerCart from "../routes/cart/cart";
+import routerCart from "../routes/carts/cart";
 import routerProduct from "../routes/product/product";
 import { Request, Response } from "express";
 import swaggerJsDoc from "swagger-jsdoc";
