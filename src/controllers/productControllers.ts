@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { HTTP_ERROR_HANDLER } from "../constants/errorHandler";
 import { Http } from "../utils/http";
-import log4js from "log4js";
+
 import { ProductService } from "../services/productServices";
 import {
   Products,
@@ -9,7 +9,7 @@ import {
 } from "../interfaces/productInterfaces";
 import { success } from "../interfaces/usersInterfaces";
 
-const loggerFile = log4js.getLogger("archivo");
+
 
 /**
  *  ProductController
@@ -30,7 +30,7 @@ export class ProductController {
 
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -46,8 +46,8 @@ export class ProductController {
       );
       Http.Ok(response, res);
     } catch (error) {
-      console.log(error)
-      loggerFile.warn(error);
+
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -74,7 +74,7 @@ export class ProductController {
         });
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -90,7 +90,7 @@ export class ProductController {
       );
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }

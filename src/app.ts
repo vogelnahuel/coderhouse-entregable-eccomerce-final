@@ -5,6 +5,10 @@ import 'reflect-metadata'
 import { DataSource } from "typeorm";
 import mongoose from "mongoose";
 import mongoDB from "./constants/mongoUrl";
+import Log4js  from "log4js";
+import log4jsConfig from './constants/log4jsConfig.json'
+Log4js.configure(log4jsConfig)
+
 export const AppDataSource = new DataSource({
   type: "mysql",
   port:3306,
@@ -17,7 +21,7 @@ export const AppDataSource = new DataSource({
   entities:["dist/js/src/dao/mysql/entities/*.js"]
 })
 
-
+DotEnv.config();
 try {
 
   if(process.env.DATABASE==="mongo"){
@@ -32,16 +36,7 @@ try {
      })
      .catch((error) => console.log(error))
   }
- 
- 
-  
-
-  DotEnv.config();
-
-  // Pool de conexiones a la DB
-
   const server: Server = new Server();
-
   server.listen();
 } catch (error) {
   console.error(error);

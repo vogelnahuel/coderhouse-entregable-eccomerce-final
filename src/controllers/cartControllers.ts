@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { HTTP_ERROR_HANDLER } from "../constants/errorHandler";
 import { Http } from "../utils/http";
-import log4js from "log4js";
+
 import { CartService } from "../services/cartServices";
 import { CartUser } from "../interfaces/cartInterfaces";
 import { success } from "../interfaces/usersInterfaces";
-const loggerFile = log4js.getLogger("archivo");
+
 
 /**
  *  CartController
@@ -25,7 +25,7 @@ export class CartController {
 
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -41,7 +41,7 @@ export class CartController {
       );
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -57,7 +57,7 @@ export class CartController {
       );
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+    
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -74,7 +74,7 @@ export class CartController {
       });
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+   
       HTTP_ERROR_HANDLER({ error, res });
     }
   }
@@ -94,7 +94,7 @@ export class CartController {
       });
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+    
       HTTP_ERROR_HANDLER({ error, res });
     }
   }

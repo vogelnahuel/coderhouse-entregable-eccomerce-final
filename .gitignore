@@ -3,7 +3,8 @@ node_modules
 package-lock.json
 yarn.lock
 .clinic
-logs
+info.log
+log
 .vscode
 .nyc_output
 

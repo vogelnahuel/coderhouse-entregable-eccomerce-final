@@ -4,9 +4,9 @@ import { UserService } from "../services/userServices";
 import { Request, Response } from "express";
 import { HTTP_ERROR_HANDLER } from '../constants/errorHandler';
 import { Http } from "../utils/http";
-import log4js from 'log4js';
+
 import { LoginPostSucess, success } from "../interfaces/usersInterfaces";
-const loggerFile = log4js.getLogger('archivo')
+
 /**
  *  UsersController
  *  @brief Controllador de las pantallas de usuarios
@@ -27,7 +27,7 @@ export class UsersController {
 
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+   
       HTTP_ERROR_HANDLER({error,res})
     }
   }
@@ -46,8 +46,7 @@ export class UsersController {
 
       Http.Ok(response, res);
     } catch (error) {
-      console.log(error)
-      loggerFile.warn(error);
+
       HTTP_ERROR_HANDLER({error,res})
     }
   }
@@ -62,7 +61,7 @@ export class UsersController {
       const response: success = await UserService.usersPostBuyService(req.body);
       Http.Ok(response, res);
     } catch (error) {
-      loggerFile.warn(error);
+   
       HTTP_ERROR_HANDLER({error,res})
     }
   }
