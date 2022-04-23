@@ -1,8 +1,11 @@
 {
   "name": "coderhouse-final",
+  "engines": {
+    "node": ">=16.14"
+  },
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
     "start:dev": "nodemon -e ts --exec \"npm run compile\" ",
     "test": "mocha --timeout 10000 -r ts-node/register \"tests/*.spec.ts\"  ",
