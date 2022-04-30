@@ -13,6 +13,11 @@ import passport from 'passport';
 import log4js from 'log4js';
 const logger = log4js.getLogger()
 require('../utils/passport')
+
+
+import { Server as HttpServer } from "http";
+import { Server as IOServer } from "socket.io";
+
 /**
  * Server
  * @brief inicializa el servidor
@@ -24,12 +29,17 @@ export default class Server {
   private readonly productPath: string;
   private readonly cartPath: string;
   private readonly userPath: string;
+  private readonly httpServer: HttpServer;
+  private readonly ioSocket:any;
   /**
    * @brief inicializa las rutas y middlewares
    */
 
   constructor() {
     this.app = express();
+
+    this.httpServer = new HttpServer(this.app);
+    this.ioSocket = new IOServer(this.httpServer);
 
     this.app.use(cors({ origin: "*" }));
     this.app.use(passport.initialize())
@@ -44,6 +54,9 @@ export default class Server {
 
     //Rutas de mi app
     this.routes();
+  }
+  getSocket(){
+    return this.ioSocket;
   }
   getApp(){
     return this.app;

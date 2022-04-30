@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import mongoDB from "./constants/mongoUrl";
 import Log4js  from "log4js";
 import log4jsConfig from './constants/log4jsConfig.json'
+import {initSockets} from './sockets/message'
 Log4js.configure(log4jsConfig)
 
 export const AppDataSource = new DataSource({
@@ -22,6 +23,11 @@ export const AppDataSource = new DataSource({
 })
 
 DotEnv.config();
+
+
+
+
+
 try {
 
   if(process.env.DATABASE==="mongo"){
@@ -37,7 +43,15 @@ try {
      .catch((error) => console.log(error))
   }
   const server: Server = new Server();
+  
+  if(process.env.DATABASE==="mongo"){
+  const socketApp = server.getSocket();
+  initSockets(socketApp);
+  }
+  
+
   server.listen();
 } catch (error) {
   console.error(error);
 }
+
