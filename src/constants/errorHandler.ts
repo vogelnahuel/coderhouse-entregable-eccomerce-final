@@ -1,6 +1,4 @@
 import { Http } from "../utils/http";
-// import Log4js from 'Log4js'
-// const   = Log4js.getLogger("archivo")
 
 type EnumDictionary<T extends string | symbol | number, U> = {
   [K in T]: U;
@@ -21,7 +19,6 @@ enum ERROR {
  *
  */
 export const HTTP_ERROR_HANDLER = ({ error, res }): void => {
-  // logger.warn(error);
   const ERROR_SELECTOR: EnumDictionary<ERROR, Function> = {
     [ERROR.NotFound]: () => Http.BadRequest(error.message, res),
     [ERROR.InvalidParams]: () => Http.BadRequest(error.message, res),
