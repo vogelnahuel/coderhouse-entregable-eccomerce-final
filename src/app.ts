@@ -5,10 +5,10 @@ import 'reflect-metadata'
 import { DataSource } from "typeorm";
 import mongoose from "mongoose";
 import mongoDB from "./constants/mongoUrl";
-import Log4js  from "log4js";
-import log4jsConfig from './constants/log4jsConfig.json'
+// import Log4js  from "log4js";
+// import log4jsConfig from './constants/log4jsConfig.json'
 import {initSockets} from './sockets/message'
-Log4js.configure(log4jsConfig)
+// Log4js.configure(log4jsConfig)
 
 export const AppDataSource = new DataSource({
   type: "mysql",
