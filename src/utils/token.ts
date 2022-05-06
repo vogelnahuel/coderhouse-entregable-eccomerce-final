@@ -26,20 +26,21 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-
   if (!URLS_WITHOUT_TOKEN_SESSION[req.url]) {
+    if (!req.url.includes("/api-docs/")) {
+      if (!req.url.includes("/socket.io")) {
+        const authHeader: string = req?.headers?.token as string;
 
-    if (!req.url.includes("/api-docs/") ) {
-      const authHeader: string = req?.headers?.token as string;
-
-      if (!authHeader) {
-        return Http.Unauthorized("Invalid authorization", res);
-      }
-      jwt.verify(authHeader, process.env.PRIVATE_KEY, (err) => {
-        if (err) {
+        if (!authHeader) {
+          console.log(req.url);
           return Http.Unauthorized("Invalid authorization", res);
         }
-      });
+        jwt.verify(authHeader, process.env.PRIVATE_KEY, (err) => {
+          if (err) {
+            return Http.Unauthorized("Invalid authorization", res);
+          }
+        });
+      }
     }
   }
 

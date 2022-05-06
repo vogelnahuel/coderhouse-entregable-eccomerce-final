@@ -14,20 +14,20 @@ require('../utils/passport')
 
 
 import { Server as HttpServer } from "http";
-import { Server as IOServer } from "socket.io";
+import { Server } from "socket.io";
 
 /**
  * Server
  * @brief inicializa el servidor
  *
  */
-export default class Server {
+export default class ServerApp {
   private readonly app: any;
   private readonly port: string;
   private readonly productPath: string;
   private readonly cartPath: string;
   private readonly userPath: string;
-  private readonly httpServer: HttpServer;
+  private readonly httpServer: any;
   private readonly ioSocket:any;
   /**
    * @brief inicializa las rutas y middlewares
@@ -35,9 +35,14 @@ export default class Server {
 
   constructor() {
     this.app = express();
-
     this.httpServer = new HttpServer(this.app);
-    this.ioSocket = new IOServer(this.httpServer);
+
+    this.ioSocket = new Server(this.httpServer,{
+      cors:{
+        origin:"http://localhost:3000",
+        methods:["GET","POST"]
+      }
+    })
 
     this.app.use(cors({ origin: "*" }));
     this.app.use(passport.initialize())
@@ -92,7 +97,7 @@ export default class Server {
    *
    */
   listen() {
-    this.app.listen(this.port, () => {
+    this.httpServer.listen(this.port, () => {
       console.log("servidor corriendo en puerto:" + this.port);
     });
   }

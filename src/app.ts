@@ -1,10 +1,12 @@
-import Server from "./models/server";
+import ServerApp from "./models/server";
 import * as DotEnv from "dotenv";
 import 'reflect-metadata'
 import { DataSource } from "typeorm";
 import mongoose from "mongoose";
 import mongoDB from "./constants/mongoUrl";
 import {initSockets} from './sockets/message'
+
+
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -38,11 +40,16 @@ try {
      })
      .catch((error) => console.log(error))
   }
-  const server: Server = new Server();
+  const server: ServerApp = new ServerApp();
   
   if(process.env.DATABASE==="mongo"){
-  const socketApp = server.getSocket();
-  initSockets(socketApp);
+    
+    const io = server.getSocket()
+    initSockets(io)
+    // io.on("connection", async (socket) => {
+    //   console.log("usuario conectado",socket.id)
+    // });
+
   }
   
 
