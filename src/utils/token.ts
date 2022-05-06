@@ -30,9 +30,7 @@ export const verifyToken = (
     if (!req.url.includes("/api-docs/")) {
       if (!req.url.includes("/socket.io")) {
         const authHeader: string = req?.headers?.token as string;
-
         if (!authHeader) {
-          console.log(req.url);
           return Http.Unauthorized("Invalid authorization", res);
         }
         jwt.verify(authHeader, process.env.PRIVATE_KEY, (err) => {
