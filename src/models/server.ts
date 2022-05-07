@@ -35,6 +35,10 @@ export default class ServerApp {
 
   constructor() {
     this.app = express();
+    this.app.use(cors({
+      origin:'*', 
+      credentials:true,           
+   }));
     this.httpServer = new HttpServer(this.app);
 
     this.ioSocket = new Server(this.httpServer,{
@@ -44,7 +48,7 @@ export default class ServerApp {
       }
     })
 
-    this.app.use(cors({ origin: "*" }));
+
     this.app.use(passport.initialize())
 
     this.port = process.env.PORT || '3000';
