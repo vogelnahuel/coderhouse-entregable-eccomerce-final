@@ -56,8 +56,6 @@ export class ProductUpdateRequest {
     this.code = body?.code || '';
     this.description = body?.description || '';
 
-    console.log(this);
-
     return this;
   }
 
