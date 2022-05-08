@@ -5,8 +5,10 @@ import { DataSource } from "typeorm";
 import mongoose from "mongoose";
 import mongoDB from "./constants/mongoUrl";
 import {initSockets} from './sockets/message'
-
-
+import Log4js  from "log4js";
+import log4jsConfig from './constants/log4jsConfigure.json'
+Log4js.configure(log4jsConfig)
+export const logger  = Log4js.getLogger("archivo")
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -21,6 +23,7 @@ export const AppDataSource = new DataSource({
 })
 
 DotEnv.config();
+
 
 
 
