@@ -25,8 +25,8 @@ const smtpTransport = createTransport({
   },
 });
 
-const accountSID: string = "AC300861e461e8a47a5b312131c2bc76c1";
-const authToken: string = "538daa933922f55da1d676853c842ac5"; // este token solo dura 3 dias
+const accountSID: string = "ACaf14bbf34ba752b123d165e2daa74476";
+const authToken: string = "bc594663974fa7894fcd678d8ecd4561"; // este token solo dura 3 dias
 const client = require("twilio")(accountSID, authToken);
 
 /**
@@ -111,15 +111,15 @@ export class UserService {
       throw new NotFound("The MAIL_OPTIONS is invalid");
     }
 
-    // try {
-    //   await client.messages.create({
-    //     from: "whatsapp:+14155238886",
-    //     body: `nuevo pedido de ${name} ${email}`,
-    //     to: `whatsapp:${phone}`,
-    //   });
-    // } catch (error) {
-    //   throw new NotFound("The messages is invalid");
-    // }
+    try {
+      await client.messages.create({
+        from: "whatsapp:+14155238886",
+        body: `nuevo pedido de ${name} ${email}`,
+        to: `whatsapp:${phone}`,
+      });
+    } catch (error) {
+      throw new NotFound("The messages is invalid");
+    }
     return { text: "se creo con exito" };
   }
 }

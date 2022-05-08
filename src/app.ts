@@ -24,11 +24,6 @@ export const AppDataSource = new DataSource({
 
 DotEnv.config();
 
-
-
-
-
-
 try {
 
   if(process.env.DATABASE==="mongo"){
@@ -49,13 +44,8 @@ try {
     
     const io = server.getSocket()
     initSockets(io)
-    // io.on("connection", async (socket) => {
-    //   console.log("usuario conectado",socket.id)
-    // });
-
   }
   
-
   server.listen();
 } catch (error) {
   console.error(error);
